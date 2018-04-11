@@ -1,0 +1,131 @@
+<!Doctype html>
+<html lang="en">
+<head>
+ <link href="https://fonts.googleapis.com/css?family=Kaushan+Script|Permanent+Marker|Rock+Salt|Satisfy" rel="stylesheet"> 
+<meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+	 <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+
+
+
+<style type="text/css">
+	
+body{
+	background-image:url("http://miriadna.com/desctopwalls/images/max/Morning-road-in-the-haze.jpg");
+	background-size: cover;
+	font-family: 'Permanent Marker', cursive;
+	color: #036013;
+}
+#card{
+	width: 500px;
+	background-color: transparent;
+	font-family: 'Rock Salt', cursive;
+	
+}
+.s{
+	
+	padding: 10%;
+}
+#temp{
+	font-size: 30px;
+	font-family: 'Satisfy', cursive;
+}
+#CITY{
+	font-size: 25px;
+	font-family: 'Kaushan Script', cursive;
+}
+</style>
+
+
+
+
+
+<script type="text/javascript">
+function triggerButton(event){
+	var code = event.which || event.keyCode;
+	//event.which contains the keycode of the key pressed
+	if(code == 13){
+		document.getElementById("submitcity").click();
+		
+	}
+}
+	
+function fetch(){
+	//city given by user
+	var city=document.getElementById("usr").value;
+	//js object for taking json data.
+	var myJson=new XMLHttpRequest();
+	//api url
+	myJson.open("GET","http://api.openweathermap.org/data/2.5/weather?APPID=54564342c25b614aa4eb4005d8011a67&q="+city,false);
+	myJson.send(null);
+	//var myJsonResponse which contains recieved data from api
+	var myJsonResponse = JSON.parse(myJson.response);
+	if(myJsonResponse.cod==200){
+		//var to stroe temperature 
+		var tempResponse = (parseInt(myJsonResponse.main.temp)-273.15).toFixed(2);
+		document.getElementById("temp").style.display="block";
+		document.getElementById("temp").innerHTML = tempResponse.toString()+" &#8451";
+		document.getElementById("CITY").innerHTML = city.toUpperCase();
+		
+	}
+	else{
+		document.getElementById("temp").innerHTML = city.toUpperCase();
+		document.getElementById("CITY").innerHTML = "City not found";
+	}
+	
+	
+}
+	
+</script>
+
+
+
+
+</head>
+
+<body>
+	<nav class="navbar navbar-inverse">
+	   	<div class="container-fluid">
+	   		<div class="navbar-header">
+	   			<a class="navbar-brand" href="#">weatherApp</a>
+	   		</div>
+	   		<ul class="nav navbar-nav">
+	   			<li class="active"><a href="#">Home</a></li>
+	   			<li><a href="#">Reload</a></li>
+	   		</ul>
+	   	</div>
+	</nav>
+
+
+	<div class="container-fluid" id="container"align="center">
+		<div class="jumbotron" id="card" align="center">
+			<h1>Weather</h1>
+			<form>
+				
+  					<label for="usr">City : </label>
+  					<input type="text" onkeydown="triggerButton(event)" id="usr" name="City">
+						
+			</form>
+			<button id=
+			"submitcity" type="button" class="btn btn-success" onclick="fetch()">Go</button>
+			<div id="temp" class="s">
+				
+			</div>
+			<div id="CITY" class="s">
+							
+			</div>
+		</div>
+		
+	</div>
+
+</body>
+</html>
